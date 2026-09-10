@@ -1,0 +1,45 @@
+name: Estrutura de diretórios e arquivos
+
+on:
+  push:
+    branches: [ main ]
+  workflow_dispatch:
+
+env:
+  EXEMPLO_VARIAVEL: "Valor de exemplo"
+  NODE_VERSION: "18.x"
+  
+jobs:
+  demonstracao-estrutura:
+    runs-on: ubuntu-latest
+
+    steps:
+      - name: Checkout do código
+        uses: actions/checkout@v4
+
+      - name: Exemplo de execução
+        run: |
+          echo "Olá do GitHub Actions!"
+          echo "Este é um template simples para iniciar seu pipeline."
+          echo "=== ESTRUTURA DE DIRETÓRIOS E ARQUIVOS .github/workflows ==="
+          ls -la .github/workflows
+          echo ""
+          echo "Total de workflows: $(ls -1 .github/workflows | wc -l)"
+      - name: Elementos obrigatórios do workflow
+        run: |
+          echo "Elementos obrigatórios do workflow:"
+          echo "1. name: Nome do workflow"
+          echo "2. on: Eventos que disparam o workflow"
+          echo "3. jobs: Conjunto de trabalhos a serem executados"
+          echo "4. steps: Passos dentro de cada trabalho"
+      - name: Variáveis de conteúdo do workflow
+        run: |
+            echo "Variáveis e Contexto"
+            echo "1. env: Variáveis de ambiente globais"
+            echo "2. run: Comandos a serem executados"
+            echo "3. uses: Ações reutilizáveis"
+            echo "4. with: Parâmetros para ações"
+            echo "5. if: Condições para execução de passos"
+            
+
+
