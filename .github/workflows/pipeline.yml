@@ -1,5 +1,11 @@
 name: Aula 19 — Variáveis e Segredos
 on:
+  push:
+    branches:
+      - main
+  pull_request:
+    branches:
+      - main
   workflow_dispatch:
 
 env:
