@@ -1,42 +1,32 @@
-name: Estrutura de diretórios e arquivos
+name: Jobs Paralelo vs Sequencial
+on: [push]
 
-on:
-  push:
-    branches: [ main ]
-  pull_request:
-    branches: [ main ]
-  workflow_dispatch:
-
-env:
-  EXEMPLO_VARIAVEL: "Valor de exemplo"
-  NODE_VERSION: "18.x"
-  
 jobs:
-  hello-world:
+  lint:
     runs-on: ubuntu-latest
-
     steps:
-      - name: Checkout do código
-        uses: actions/checkout@v4
+      - uses: actions/checkout@v4
+      - name: Lint
+        run: echo "Lint OK"
 
-      - name: Execute Hello World
-        run: echo "Hello, World!"
+  testes:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+      - name: Testes
+        run: echo "Testes OK"
 
-      - name: Mostrar Informações do Sistema
-        run: |
-          echo "Sistema Operacional: ${{ runner.os }}"
-          echo "Diretorio Atual: ${pwd}"
-          echo "Data e Hora: $(date)"
-          echo "Usuario Atual: $(whoami)"
-      
-      - name: Listar arquivos do diretório
-        run: ls -la
+  build:
+    needs: [lint, testes]
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+      - name: Build
+        run: echo "Build executado"
 
-      - name: Comandos Multiplos
-        run: |
-          echo "Executando múltiplos comandos"
-          echo "Diretório Atual: ${pwd}"
-          echo "Listando arquivos:"
-        
-
-      
+  publicar:
+    needs: build
+    runs-on: ubuntu-latest
+    steps:
+      - name: Publicar (simulado)
+        run: echo "Publicação concluída"
