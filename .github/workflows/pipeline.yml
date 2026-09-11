@@ -15,7 +15,7 @@ env:
 jobs:
   build:
     runs-on: ubuntu-latest
-    environment: hom           # ativa vars e secrets do ambiente "prod"
+    environment: homol           # ativa vars e secrets do ambiente "prod"
     env:
       LOG_LEVEL: warn           # sobrescreve o valor do workflow neste job
       APP_ENV: ${{ vars.APP_ENV }}  # usa vars do ambiente/repo/org conforme o environment
