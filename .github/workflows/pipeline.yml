@@ -1,32 +1,36 @@
-name: Jobs Paralelo vs Sequencial
-on: [push]
+name: Aula 19 — Variáveis e Segredos
+on:
+  workflow_dispatch:
+
+env:
+  APP_NAME: demo-app            # escopo do workflow
+  LOG_LEVEL: info
 
 jobs:
-  lint:
-    runs-on: ubuntu-latest
-    steps:
-      - uses: actions/checkout@v4
-      - name: Lint
-        run: echo "Lint OK"
-
-  testes:
-    runs-on: ubuntu-latest
-    steps:
-      - uses: actions/checkout@v4
-      - name: Testes
-        run: echo "Testes OK"
-
   build:
-    needs: [lint, testes]
     runs-on: ubuntu-latest
+    environment: prod           # ativa vars e secrets do ambiente "prod"
+    env:
+      LOG_LEVEL: warn           # sobrescreve o valor do workflow neste job
+      APP_ENV: ${{ vars.APP_ENV }}  # usa vars do ambiente/repo/org conforme o environment
     steps:
-      - uses: actions/checkout@v4
-      - name: Build
-        run: echo "Build executado"
+      - name: Mostrar env herdado e precedence
+        env:
+          APP_NAME: step-override   # sobrescreve o job/workflow apenas neste step
+        run: |
+          echo "APP_NAME (step): ${APP_NAME}"
+          echo "LOG_LEVEL (job): ${LOG_LEVEL}"
+          echo "APP_ENV (vars): ${APP_ENV:-dev}"
 
-  publicar:
-    needs: build
-    runs-on: ubuntu-latest
-    steps:
-      - name: Publicar (simulado)
-        run: echo "Publicação concluída"
+      - name: Mapear segredo para o shell com segurança
+        env:
+          API_TOKEN: ${{ secrets.API_TOKEN }}
+        run: |
+          echo "Usando token em chamada (valor não impresso)"
+          # Exemplo: curl -H "Authorization: Bearer ${API_TOKEN}" https://api.exemplo.local/health
+          echo "Token está mascarado por padrão e não será exibido nos logs"
+
+      - name: Condicional usando vars (evitar secrets diretamente em if)
+        if: ${{ vars.APP_ENV == 'prod' }}
+        run: |
+          echo "Executando etapa somente em prod"
