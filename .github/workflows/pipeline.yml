@@ -22,7 +22,7 @@ jobs:
           echo "LOG_LEVEL (job): ${LOG_LEVEL}"
           echo "APP_ENV (vars): ${APP_ENV:-dev}"
 
-      - name: Mapear segredo para o shell com segurança
+      - name: Mapear segredo para o shell com seguranças
         env:
           API_TOKEN: ${{ secrets.API_TOKEN }}
         run: |
