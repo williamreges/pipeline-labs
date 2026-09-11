@@ -40,6 +40,9 @@ jobs:
             echo "3. uses: Ações reutilizáveis"
             echo "4. with: Parâmetros para ações"
             echo "5. if: Condições para execução de passos"
+            echo "6. ${{ github }}: Contexto do repositório e evento"
+            echo "7. ${{ secrets }}: Variáveis de ambiente seguras"
+            echo "8. ${{ env.EXEMPLO_VARIAVEL }}: Acesso a variáveis de ambiente definidas no workflow"
             
 
 
